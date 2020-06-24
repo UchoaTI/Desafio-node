@@ -31,15 +31,54 @@ app.post("/repositories", (request, response) => {
 });
 
 app.put("/repositories/:id", (request, response) => {
-  // TODO
+  const {id} = request.params;
+  const { title, url, techs } = request.body
+  
+  const repo = repositories.findIndex(repo=>repo.id === id);
+
+  if (repo<0){
+    return response.status(400).json({erroe : 'not found'})
+  }
+
+  repositories[repo]={
+    id, 
+    url,
+    title,
+    techs,
+    likes: repositories[repo].likes
+  }
+
+
+  return response.json(repositories[repo]);
+
 });
 
 app.delete("/repositories/:id", (request, response) => {
-  // TODO
+  const {id} = request.params
+
+  const repo = repositories.findIndex(repo=>repo.id === id);
+
+  if (repo<0){
+    return response.status(400).json({erroe : 'not found'})
+  }
+
+  repositories.splice(repo, 1)
+
+  return response.send(204)
 });
 
 app.post("/repositories/:id/like", (request, response) => {
-  // TODO
+  const {id} = request.params
+
+  const repo = repositories.findIndex(repo=>repo.id === id);
+
+  if (repo<0){
+    return response.status(400).json({erroe : 'not found'})
+  }
+
+  repositories[repo].likes++;
+
+  return response.json(repositories[repo])
 });
 
 module.exports = app;
