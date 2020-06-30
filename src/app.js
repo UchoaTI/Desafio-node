@@ -18,51 +18,51 @@ app.post("/repositories", (request, response) => {
     
     const { title, url, techs } = request.body
 
-    const repo = { 
+    const repository = { 
       id: uuid(), 
       url,
       title,
       techs,
       likes: 0
      };
-    repositories.push(repo);
+    repositories.push(repository);
 
-    return response.json(repo);
+    return response.json(repository);
 });
 
 app.put("/repositories/:id", (request, response) => {
   const {id} = request.params;
   const { title, url, techs } = request.body
   
-  const repo = repositories.findIndex(repo=>repo.id === id);
+  const repo = repositories.findIndex(repository=>repository.id === id);
 
-  if (repo<0){
+  if (repository<0){
     return response.status(400).json({erroe : 'not found'})
   }
 
-  repositories[repo]={
+  repositories[repository]={
     id, 
     url,
     title,
     techs,
-    likes: repositories[repo].likes
+    likes: repositories[repository].likes
   }
 
 
-  return response.json(repositories[repo]);
+  return response.json(repositories[repository]);
 
 });
 
 app.delete("/repositories/:id", (request, response) => {
   const {id} = request.params
 
-  const repo = repositories.findIndex(repo=>repo.id === id);
+  const repository = repositories.findIndex(repository=>repository.id === id);
 
-  if (repo<0){
+  if (repository<0){
     return response.status(400).json({erroe : 'not found'})
   }
 
-  repositories.splice(repo, 1)
+  repositories.splice(repository, 1)
 
   return response.send(204)
 });
@@ -70,15 +70,15 @@ app.delete("/repositories/:id", (request, response) => {
 app.post("/repositories/:id/like", (request, response) => {
   const {id} = request.params
 
-  const repo = repositories.findIndex(repo=>repo.id === id);
+  const repository = repositories.findIndex(repository=>repository.id === id);
 
-  if (repo<0){
+  if (repository<0){
     return response.status(400).json({erroe : 'not found'})
   }
 
-  repositories[repo].likes++;
+  repositories[repository].likes++;
 
-  return response.json(repositories[repo])
+  return response.json(repositories[repository])
 });
 
 module.exports = app;
